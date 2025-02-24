@@ -1,0 +1,66 @@
+nav{
+  background-color: #7ae582;
+ 
+}
+
+/* Add a border around the entire form and budget items */
+.budget-form-container {
+  border: 2px solid #28a745; /* Green border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background color */
+  margin-top: 20px;
+}
+
+.budget-items-list {
+  border-top: 2px solid #28a745; /* Green border separating form from list */
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.navbar-nav .nav-link {
+  text-decoration: none; /* Remove default underline */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.navbar-nav .nav-link:hover {
+  text-decoration: underline; /* Underline on hover */
+  background-color: #d1e7dd;  /* Light green background */
+  color: #0f5132;  /* Darker text color */
+}
+
+.pages{
+  max-width: 1400px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+/* auth forms */
+form{
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+
+form button {
+  background: #7ae582;
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
