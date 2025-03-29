@@ -1,38 +1,66 @@
-.App {
-  text-align: center;
+nav{
+  background-color: #7ae582;
+ 
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Add a border around the entire form and budget items */
+.budget-form-container {
+  border: 2px solid #28a745; /* Green border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background color */
+  margin-top: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.budget-items-list {
+  border-top: 2px solid #28a745; /* Green border separating form from list */
+  margin-top: 20px;
+  padding-top: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.navbar-nav .nav-link {
+  text-decoration: none; /* Remove default underline */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
 
-.App-link {
-  color: #61dafb;
+.navbar-nav .nav-link:hover {
+  text-decoration: underline; /* Underline on hover */
+  background-color: #d1e7dd;  /* Light green background */
+  color: #0f5132;  /* Darker text color */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.pages{
+  max-width: 1400px;
+  padding: 20px;
+  margin: 0 auto;
 }
+
+/* auth forms */
+form{
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+
+form button {
+  background: #7ae582;
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
