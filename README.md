@@ -1,7 +1,7 @@
 Vite, react, react router dom, tailwindcss
 
 
-To run, type npm run dev
+To run, type npm run dev in terminal (cmd) in vscode
 
 ![image](https://github.com/user-attachments/assets/df7961c6-b31c-480a-9691-b8d027d16312)
 ![image](https://github.com/user-attachments/assets/81155108-1b51-4ad3-b5ff-c66b266e83fa)
