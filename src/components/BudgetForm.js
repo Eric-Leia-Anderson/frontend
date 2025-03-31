@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, ListGroup } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';  // Make sure to import the CSS file
-
+//bakcend needs budget controller and tables, so can keep this info
+//categories?
+//connect this to backend to keep budget
+//do a monthly budget, so restart on 1st of month
 const BudgetForm = () => {
   const [budgetName, setBudgetName] = useState('');
   const [price, setPrice] = useState('');
