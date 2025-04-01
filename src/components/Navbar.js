@@ -1,7 +1,9 @@
+import React from 'react';
 import {Link} from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+//if user is not logged in, have signup page instead
+//
 const TopNavbar = () => {
   return (
     
