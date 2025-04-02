@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ArrowLeft } from 'lucide-react';
+
+import { request, setAuthHeader } from '../helpers/axios_helper';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -11,20 +14,52 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-const Login = () => {
+interface LoginProps {
+  onLogin: () => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+  const { register, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log(data);
-    navigate('/');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    request(
+      "POST",
+      "/login",
+      {
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log('Login successful');
+        setAuthHeader(response.data.token);
+        onLogin();
+        navigate('/dashboard');
+      })
+      .catch((error) => {
+        console.error('Login error:', error);
+        setAuthHeader(null);
+        alert('Login failed. Please try again.');
+      });
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <button
+          onClick={() => navigate('/')}
+          className="mb-6 flex items-center text-gray-600 hover:text-gray-900"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Home
+        </button>
         <h2 className="text-center text-3xl font-extrabold text-gray-900">
           Budget Website
         </h2>
@@ -35,7 +70,7 @@ const Login = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email address
@@ -44,6 +79,8 @@ const Login = () => {
                 <input
                   {...register('email')}
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
                 {errors.email && (
@@ -60,6 +97,8 @@ const Login = () => {
                 <input
                   {...register('password')}
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
                 {errors.password && (
