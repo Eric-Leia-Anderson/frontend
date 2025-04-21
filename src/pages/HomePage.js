@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import BudgetForm from '../components/BudgetForm';
+import Chatbot from '../components/Chatbot';
 
 const HomePage = () => {
   return (
@@ -26,6 +27,8 @@ const HomePage = () => {
     </Container>
 
     <BudgetForm/>
+
+    <Chatbot/>
     </div>
   );
 };
