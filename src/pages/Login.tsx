@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Wallet } from 'lucide-react';
 
-function Login() {
+interface LoginProps {
+  onLogin: () => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -21,6 +25,11 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.jwt);
+        localStorage.setItem('id', data.id);
+        localStorage.setItem('firstName', data.firstName);
+        localStorage.setItem('lastName', data.lastName);
+        localStorage.setItem('email', data.email);
+        onLogin();
         navigate('/dashboard');
       } else {
         const error = await response.json();

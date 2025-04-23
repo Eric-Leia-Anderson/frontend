@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
 interface UserProfile {
+  firstName: string;
+  lastName: string;
   email: string;
-  name: string;
-  joinDate: string;
 }
 
 function Profile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   useEffect(() => {
     fetchProfile();
@@ -17,7 +19,7 @@ function Profile() {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/user/profile', {
+      const response = await fetch('http://localhost:8080/api/auth/profile', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
@@ -25,7 +27,11 @@ function Profile() {
       if (response.ok) {
         const data = await response.json();
         setProfile(data);
-        setName(data.name);
+        setFirstName(data.firstName);
+        setLastName(data.lastName);
+        localStorage.setItem('firstName', firstName);
+        localStorage.setItem('lastName', lastName);
+        localStorage.setItem('email', data.email);
       }
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -35,13 +41,13 @@ function Profile() {
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/api/user/profile', {
-        method: 'PUT',
+      const response = await fetch('http://localhost:8080/api/auth/profile/update', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({firstName: firstName, lastName: lastName, password: null, email: null}),
       });
       
       if (response.ok) {
@@ -80,12 +86,19 @@ function Profile() {
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   {isEditing ? (
                     <form onSubmit={handleUpdateProfile} className="flex gap-2">
-                      <input
+                      <label>First Name: <input
                         type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
                         className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                      />
+                      /></label>
+                      <label>Last Name: <input
+                        type="text"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      /></label>
+                      
                       <button
                         type="submit"
                         className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -102,7 +115,7 @@ function Profile() {
                     </form>
                   ) : (
                     <div className="flex justify-between items-center">
-                      <span>{profile.name}</span>
+                      <span>{profile.firstName} {profile.lastName}</span>
                       <button
                         onClick={() => setIsEditing(true)}
                         className="text-indigo-600 hover:text-indigo-500 text-sm font-medium"
@@ -111,13 +124,6 @@ function Profile() {
                       </button>
                     </div>
                   )}
-                </dd>
-              </div>
-
-              <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-                <dt className="text-sm font-medium text-gray-500">Joined</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {new Date(profile.joinDate).toLocaleDateString()}
                 </dd>
               </div>
             </dl>
