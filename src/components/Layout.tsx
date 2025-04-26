@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Home, Receipt, PiggyBank, User2, LogOut, PieChart, Blocks } from 'lucide-react';
 
@@ -23,6 +23,7 @@ const Layout: React.FC<LayoutProps> = ({ children, onLogout}) => {
     { path: '/analytics', icon: PieChart, label: 'Analytics' },
     { path: '/CreateCategory', icon: Blocks, label: 'Create Category' },
   ];
+  
 
   const handleLogout = () => {
     onLogout();

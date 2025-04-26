@@ -10,6 +10,12 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const [exists, setExists] = useState(false);
+  const [secret, setSecret] = useState('');
+  const [remember, setRemember] = useState(false);
+  const handleCheckboxChange = (event: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
+    setRemember(event.target.checked);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,7 +25,40 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         headers: {
           'Content-Type': 'application/json; charset=utf-8'
         },
-        body: JSON.stringify({email: email, password: password }),
+        body: JSON.stringify({email: email, password: password, rememberMe: remember}),
+      });
+      
+      if (response.status == 200) {
+        const data = await response.json();
+          localStorage.setItem('token', data.jwt);
+          localStorage.setItem('id', data.id);
+          localStorage.setItem('firstName', data.firstName);
+          localStorage.setItem('lastName', data.lastName);
+          localStorage.setItem('email', data.email);
+          onLogin();
+          navigate('/dashboard');
+        
+      } else if(response.status == 202) {
+          setExists(true);
+      }
+      else {
+        const error = await response.json();
+        alert(error.message);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Login failed. Please try again.');
+    }
+  };
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify({email: email, password: password, oneTimeCode: secret}),
       });
       
       if (response.ok) {
@@ -103,6 +142,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 <input
                   id="remember-me"
                   name="remember-me"
+                  checked={remember}
+                  onChange={handleCheckboxChange}
                   type="checkbox"
                   className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                 />
@@ -127,6 +168,31 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               </button>
             </div>
           </form>
+          { exists && <form className="space-y-6" onSubmit={handleVerify}> 
+            <div>
+              <label htmlFor="secret" className="block text-sm font-medium text-gray-700">
+                Please Enter The One Time Password Sent To Your Email
+              </label>
+              <div className="mt-1">
+                <input
+                  id="secret"
+                  name="secret"
+                  type="secret"
+                  autoComplete="secret"
+                  required
+                  value={secret}
+                  onChange={(e) => setSecret(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+            </div>
+            <button
+                type="submit"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Verify
+              </button>
+            </form>}
         </div>
       </div>
     </div>

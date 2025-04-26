@@ -22,6 +22,7 @@ function CreateTransaction() {
             if (response.ok) {
               const data =  await response.json();
               setCategories(data);
+              setCategory(categories.at(1)!.category);
               console.log(categories);
             } else {
               const error = await response.json();
@@ -130,12 +131,13 @@ function CreateTransaction() {
                   name="category" required
                   value={category}
                   onChange={(e) => setCategory(e.target.value)} className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="" disabled>Select an option</option>
                     {categories.map((cat,index) =>
                     <option key={index} value={cat.category}>{cat.category}</option>)};
                     </select>
               </div>
               {categories && !categories.length? (
-                <div>
+                <form className="space-y-6" onSubmit={addCategory}>
                     <label htmlFor="newCategory" className="block text-sm font-medium text-gray-700">
                 Add New Category
               </label>
@@ -167,13 +169,12 @@ function CreateTransaction() {
               <div>
               <button
                 type="submit"
-                onClick={addCategory}
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Create
               </button>
                 </div>
-                </div>
+                </form>
                 ):""}
             </div>
 

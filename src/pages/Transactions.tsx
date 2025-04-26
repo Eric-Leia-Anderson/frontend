@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react';
 import { Routes, Route, NavLink, useNavigate, Navigate } from 'react-router-dom';
 import { Transaction } from '../types';
 import CreateTransaction from './CreateTransaction';
-//delete transaction needed
+
 const Transactions = () => {
   const navigate = useNavigate();
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
@@ -26,7 +26,6 @@ const Transactions = () => {
       if (response.ok) {
         const data =  await response.json();
         setTransactions(data);
-        console.log(transactions);
       } else {
         const error = await response.json();
         alert(error.message);
@@ -37,7 +36,6 @@ const Transactions = () => {
   };
   const removeTransaction = async (uuid: string) => {
     const realId = uuid;
-    console.log("uuid: ", realId);
     try {
       const response = await fetch('http://localhost:8080/api/transactions/delete?id='+realId, {
         method: 'GET',
@@ -47,7 +45,6 @@ const Transactions = () => {
         }
       });
       if (response.ok) {
-        //const data =  await response.json();
         fetchTransactions();
       } else {
           console.error('Removing transaction error');

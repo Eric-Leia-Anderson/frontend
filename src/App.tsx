@@ -17,12 +17,10 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
   const handleLogin = () => {
-    console.log("Authenticated, login");
     setIsAuthenticated(true);
   };
 
   const handleLogout = () => {
-    console.log("Not Authenticated, logout");
     setIsAuthenticated(false);
   };
 
