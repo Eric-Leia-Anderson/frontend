@@ -23,7 +23,6 @@ function CreateTransaction() {
               const data =  await response.json();
               setCategories(data);
               setCategory(categories.at(1)!.category);
-              console.log(categories);
             } else {
               const error = await response.json();
               alert(error.message);
@@ -78,7 +77,7 @@ function CreateTransaction() {
           });
           
           if (response.ok) {
-            navigate('/transactions');
+            navigate(-1);
           } else {
             alert('Failed to create transaction. Please try again.');
           }
@@ -86,8 +85,8 @@ function CreateTransaction() {
           alert('Failed to create transaction. Please try again.');
         }
       };
-      const goToTransactions = () => {
-        navigate('/Transactions');
+      const goBack = () => {
+        navigate(-1);
     }
   return (
     <div className="space-y-6 ">
@@ -97,9 +96,9 @@ function CreateTransaction() {
         </div>
       <button
         type="submit"
-        onClick={goToTransactions}
+        onClick={goBack}
         className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                Back to Transactions
+                Back
               </button>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">

@@ -2,12 +2,17 @@ import React, { useState, useEffect} from 'react';
 import { Routes, Route, NavLink, useNavigate, Navigate } from 'react-router-dom';
 import { Transaction } from '../types';
 import CreateTransaction from './CreateTransaction';
+import OlderTransaction from './OlderTransactions';
 
 const Transactions = () => {
   const navigate = useNavigate();
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
+  const [month, setMonth] = useState(new Date().toLocaleString("en-US", { month: "long" }));
   function moveToCreateTransaction() {
     navigate('/CreateTransaction');
+  };
+  function goToPrevious() {
+    navigate('/OlderTransactions');
   }
   useEffect(() => {
     fetchTransactions();
@@ -53,18 +58,21 @@ const Transactions = () => {
       console.error('Removing transaction error', error);
     }
   };
-    
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
+      <button onClick={goToPrevious} className="bg-blue-600 text-white px-2 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          View Specific Transactions
+        </button>
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Transactions</h1>
-          <p className="text-gray-600">View and manage your transactions</p>
+          <p className="text-gray-600">View and manage your transactions for {month}</p>
         </div>
       <button onClick={moveToCreateTransaction} className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
           Add Transaction
         </button>
-        </div>
+      </div>
 
     <div className="bg-white rounded-lg shadow">
     <div className="overflow-x-auto">
