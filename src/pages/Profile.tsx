@@ -9,7 +9,6 @@ interface UserProfile {
 function Profile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
@@ -29,8 +28,8 @@ function Profile() {
         setProfile(data);
         setFirstName(data.firstName);
         setLastName(data.lastName);
-        localStorage.setItem('firstName', firstName);
-        localStorage.setItem('lastName', lastName);
+        localStorage.setItem('firstName', data.firstName);
+        localStorage.setItem('lastName', data.lastName);
         localStorage.setItem('email', data.email);
       }
     } catch (error) {
@@ -60,65 +59,84 @@ function Profile() {
   };
 
   if (!profile) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="text-blue-600">Loading...</div>
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-8">
-      <h1 className="text-2xl font-semibold text-gray-900 mb-8">Profile</h1>
+    <div className="space-y-6 max-w-4xl mx-auto">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-blue-900">User Profile</h1>
+          <p className="text-blue-600">Manage your account information</p>
+        </div>
+      </div>
       
-      <div className="bg-white shadow rounded-lg p-6">
+      <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md border border-blue-100 p-6">
         <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-medium text-gray-900">Account Information</h3>
-            <p className="mt-1 text-sm text-gray-500">Update your account information.</p>
+          <div className="border-b border-blue-100 pb-6">
+            <h3 className="text-lg font-medium text-blue-900">Account Information</h3>
+            <p className="mt-1 text-sm text-blue-600">Update your personal details below</p>
           </div>
 
-          <div className="border-t border-gray-200 pt-6">
-            <dl className="divide-y divide-gray-200">
+          <div className="pt-2">
+            <dl className="divide-y divide-blue-100">
               <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-                <dt className="text-sm font-medium text-gray-500">Email address</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{profile.email}</dd>
+                <dt className="text-sm font-medium text-blue-700">Email address</dt>
+                <dd className="mt-1 text-sm text-blue-900 sm:mt-0 sm:col-span-2">{profile.email}</dd>
               </div>
 
               <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-                <dt className="text-sm font-medium text-gray-500">Name</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <dt className="text-sm font-medium text-blue-700">Full Name</dt>
+                <dd className="mt-1 text-sm text-blue-900 sm:mt-0 sm:col-span-2">
                   {isEditing ? (
-                    <form onSubmit={handleUpdateProfile} className="flex gap-2">
-                      <label>First Name: <input
-                        type="text"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                      /></label>
-                      <label>Last Name: <input
-                        type="text"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                      /></label>
+                    <form onSubmit={handleUpdateProfile} className="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4">
+                      <div className="col-span-3 sm:col-span-1">
+                        <label htmlFor="firstName" className="block text-sm font-medium text-blue-700">First Name</label>
+                        <input
+                          id="firstName"
+                          type="text"
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
+                          className="mt-1 block w-full border border-blue-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
+                      <div className="col-span-3 sm:col-span-1">
+                        <label htmlFor="lastName" className="block text-sm font-medium text-blue-700">Last Name</label>
+                        <input
+                          id="lastName"
+                          type="text"
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
+                          className="mt-1 block w-full border border-blue-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
                       
-                      <button
-                        type="submit"
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Save
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setIsEditing(false)}
-                        className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Cancel
-                      </button>
+                      <div className="col-span-3 flex items-center justify-end space-x-3 mt-4">
+                        <button
+                          type="button"
+                          onClick={() => setIsEditing(false)}
+                          className="py-2 px-4 border border-blue-300 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                        >
+                          Save Changes
+                        </button>
+                      </div>
                     </form>
                   ) : (
                     <div className="flex justify-between items-center">
                       <span>{profile.firstName} {profile.lastName}</span>
                       <button
                         onClick={() => setIsEditing(true)}
-                        className="text-indigo-600 hover:text-indigo-500 text-sm font-medium"
+                        className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
                       >
                         Edit
                       </button>

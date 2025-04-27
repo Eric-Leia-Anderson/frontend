@@ -2,7 +2,6 @@ import { Doughnut } from 'react-chartjs-2';
 import { useEffect, useState } from 'react';
 import { Transaction } from '../types';
 import React from 'react';
-import { BalanceData } from '../types';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -27,21 +26,22 @@ ChartJS.register(
 );
 
 const Home = () => {
-    useEffect(() => {
-        fetchInfo();
-      },[]);
+  useEffect(() => {
+    fetchInfo();
+  }, []);
+  
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
   const [firstName, setFirstname] = useState(localStorage.getItem('firstName'));
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
-  const [total, setTotal] = useState(0);
-  var balanceData = {
+  
+  const balanceData = {
     labels: ['Income', 'Expenses'],
     datasets: [
       {
         data: [totalIncome, totalExpenses],
-        backgroundColor: ['#4CAF50', '#F87171'],
-        borderColor: ['#4CAF50', '#F87171'],
+        backgroundColor: ['#0EA5E9', '#F87171'],
+        borderColor: ['#0EA5E9', '#F87171'],
         borderWidth: 1,
       },
     ],
@@ -58,7 +58,7 @@ const Home = () => {
       });
       
       if (response.ok) {
-        const data =  await response.json();
+        const data = await response.json();
         setTransactions(data.mostRecentTransactions);
         setTotalIncome(data.totalIncome);
         setTotalExpenses(data.totalExpenses);
@@ -75,95 +75,70 @@ const Home = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Welcome Back, {firstName}!</h1>
-          <p className="text-gray-600">Here's your financial overview</p>
+          <h1 className="text-2xl font-bold text-blue-900">Welcome Back, {firstName}!</h1>
+          <p className="text-blue-600">Here's your financial overview</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-700">Cash Flow</h3>
-          <p className="text-3xl font-bold text-blue-500 mt-2">${(totalIncome - totalExpenses).toFixed(2)}</p>
-          <p className="text-sm text-gray-500 mt-1">Updated just now</p>
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg shadow-md border border-blue-200">
+          <h3 className="text-lg font-semibold text-blue-900">Cash Flow</h3>
+          <p className="text-3xl font-bold text-blue-600 mt-2">${(totalIncome - totalExpenses).toFixed(2)}</p>
+          <p className="text-sm text-blue-500 mt-1">Updated just now</p>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-700">Monthly Income</h3>
-          <p className="text-3xl font-bold text-green-500 mt-2">${totalIncome.toFixed(2)}</p>
+        <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-lg shadow-md border border-emerald-200">
+          <h3 className="text-lg font-semibold text-emerald-900">Monthly Income</h3>
+          <p className="text-3xl font-bold text-emerald-600 mt-2">${totalIncome.toFixed(2)}</p>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-700">Monthly Expenses</h3>
-          <p className="text-3xl font-bold text-red-500 mt-2">${totalExpenses.toFixed(2)}</p>
+        <div className="bg-gradient-to-br from-rose-50 to-rose-100 p-6 rounded-lg shadow-md border border-rose-200">
+          <h3 className="text-lg font-semibold text-rose-900">Monthly Expenses</h3>
+          <p className="text-3xl font-bold text-rose-600 mt-2">${totalExpenses.toFixed(2)}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Income vs Expenses</h3>
+        <div className="bg-white p-6 rounded-lg shadow-md border border-blue-100">
+          <h3 className="text-lg font-semibold text-blue-900 mb-4">Income vs Expenses</h3>
           <div className="h-64">
             <Doughnut data={balanceData} options={{ maintainAspectRatio: false }} />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Recent Transactions</h3>
+        <div className="bg-white p-6 rounded-lg shadow-md border border-blue-100">
+          <h3 className="text-lg font-semibold text-blue-900 mb-4">Recent Transactions</h3>
           <div className="space-y-4">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-            <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Date
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Description
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Category
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Amount
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Type
-                </th>
-                </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-          {transactions.map((transaction) => (
-            <tr key={transaction.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {new Date(transaction.date).toLocaleDateString()}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {transaction.transactionDesc}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {transaction.category}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                <span className={transaction.type === 'expense' ? 'text-red-600' : 'text-green-600'}>
-                  {transaction.type === 'expense' ? '-' : '+'}${transaction.amount}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                  transaction.type === 'expense' 
-                    ? 'bg-red-100 text-red-800' 
-                    : 'bg-green-100 text-green-800'
-                }`}>
-                  {transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
-                </span>
-              </td>
-            </tr>
-          ))}
-          </tbody>
-          </table>
+            {transactions.length > 0 ? (
+              transactions.map((transaction) => (
+                <div key={transaction.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200 hover:border-blue-200 transition-colors duration-200">
+                  <div className="flex items-center">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      transaction.type === 'expense' 
+                        ? 'bg-rose-600/10'
+                        : 'bg-blue-600/10'
+                    }`}>
+                      <span className={transaction.type === 'expense' ? 'text-rose-600 text-lg' : 'text-blue-600 text-lg'}>$</span>
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-medium text-gray-900">{transaction.transactionDesc}</p>
+                      <p className="text-xs text-gray-500">
+                        {new Date(transaction.date).toLocaleDateString()} • {transaction.category}
+                      </p>
+                    </div>
+                  </div>
+                  <span className={transaction.type === 'expense' ? 'text-rose-600 font-medium' : 'text-emerald-600 font-medium'}>
+                    {transaction.type === 'expense' ? '-' : '+'}${transaction.amount}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500 py-4">No recent transactions</p>
+            )}
           </div>
         </div>
       </div>
     </div>
-    
   );
 };
 
