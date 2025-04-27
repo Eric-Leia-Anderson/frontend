@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate} from 'react-router-dom';
 import { Category } from '../types';
+import Budget from './Budget';
 
 function CreateCategory() {
+   const navigate = useNavigate();
     const [newCategory, setNewCategory] = useState('');
     const [categoryMax, setCategoryMax] = useState('');
     const [description, setDescription] = useState('');
@@ -21,7 +23,8 @@ function CreateCategory() {
           });
           
           if (response.ok) {
-            const data =  await response.json();
+            //const data =  await response.json();
+            navigate('/budget');
           }
         } catch (error) {
           console.error('Adding category error');

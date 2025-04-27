@@ -19,7 +19,7 @@ function Home() {
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center">
               <Wallet className="h-8 w-8 text-indigo-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">Budget Website</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">Fit Budget</span>
             </div>
             <div className="flex items-center space-x-4">
               <Link to="/register" className="text-gray-600 hover:text-gray-900">Register</Link>

@@ -40,7 +40,7 @@ const Layout: React.FC<LayoutProps> = ({ children, onLogout}) => {
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-lg">
         <div className="p-4">
-          <h1 className="text-2xl font-bold text-blue-600">Budget Website</h1>
+          <h1 className="text-2xl font-bold text-blue-600">Fit Budget</h1>
         </div>
         
         <nav className="mt-8">
