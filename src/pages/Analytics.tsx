@@ -31,13 +31,7 @@ ChartJS.register(
   LineController,
   Title
 );
- //month of categories, doughnut, table below, //monthly cash flow is basic sideways bar graph of income and expenses
-//chart for spending of all budgets pie chart, maybe put table below it of all categories and expenses so far also
-//spending of categories breakdown, bar, 1 month
 
-//yearly cash flow? income - expenses = cash flow table : month&year income expenses cash flow
-//year of cashflow by month, bar and line? table below, //year of expenses/income by month, bar
-//year of expenses broken down by categories on bar chart (jan has bar of multiple colors and each color is category)
 function Analytics() {
   const [transactionsMonth, setTransactionsMonth] = React.useState<Transaction[]>([]);
   const [transactionsYear, setTransactionsYear] = React.useState<Transaction[]>([]);
@@ -50,8 +44,9 @@ function Analytics() {
   const [categoryLabels, setCategoryLabels] = React.useState<String[]>([]);
 
   useEffect(() => {
-          fetchInfo();
-        },[]);
+    fetchInfo();
+  }, []);
+
   const barOptions = {
     maintainAspectRatio: false,
     plugins: {
@@ -65,67 +60,68 @@ function Analytics() {
         x: {
           beginAtZero: true,
           ticks: {
-             autoSkip: false
+            autoSkip: false
           }
-      }
+        }
       }
     },
   };
+
   const barData = {
     labels: yearLabels,
     datasets: [
       {
         label: 'Income',
         data: yearIncome,
-        backgroundColor: '#4CAF50',
+        backgroundColor: '#3B82F6', // Blue color for income
       },
       {
         label: 'Expenses',
         data: yearExpense,
-        backgroundColor: '#F87171',
+        backgroundColor: '#F87171', // Red color for expenses
       },
-    ],};
-  var balanceDoughnutData = {
+    ],
+  };
+
+  const balanceDoughnutData = {
     labels: ['Income', 'Expenses'],
     datasets: [
       {
         data: [totalIncome, totalExpenses],
-        backgroundColor: ['#4CAF50', '#F87171'],
-        borderColor: ['#4CAF50', '#F87171'],
+        backgroundColor: ['#10B981', '#F87171'], // Green for income, red for expenses
+        borderColor: ['#10B981', '#F87171'],
         borderWidth: 1,
       },
     ],
   };
-  var categoryDoughnutData = {
+
+  // Diverse color palette for categories
+  const categoryDoughnutData = {
     labels: categoryLabels,
     datasets: [
       {
         data: categories,
+        backgroundColor: [
+          '#3B82F6', // Blue
+          '#EF4444', // Red
+          '#10B981', // Green
+          '#F59E0B', // Amber
+          '#8B5CF6', // Purple
+          '#EC4899', // Pink
+          '#14B8A6', // Teal
+          '#F97316', // Orange
+          '#6366F1', // Indigo
+          '#84CC16', // Lime
+          '#A855F7', // Violet
+          '#D946EF', // Fuchsia
+          '#06B6D4', // Cyan
+          '#0EA5E9', // Sky
+          '#64748B', // Slate
+        ],
+        borderColor: '#ffffff',
         borderWidth: 1,
       },
     ],
-  };
-
-  const config = {
-    type: 'bar',
-    //data: data,
-    options: {
-      indexAxis: 'y',
-      // Elements options apply to all of the options unless overridden in a dataset
-      // In this case, we are setting the border of each horizontal bar to be 2px wide
-      elements: {
-        bar: {
-          borderWidth: 2,
-        }
-      },
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'right',
-        },
-
-      }
-    },
   };
 
   const fetchInfo = async () => {
@@ -139,7 +135,7 @@ function Analytics() {
       });
       
       if (response.ok) {
-        const data =  await response.json();
+        const data = await response.json();
         setTransactionsMonth(data.allTransactionsMonth);
         setTransactionsYear(data.allTransactionsYear);
         setTotalIncome(data.totalMonthIncome);
@@ -157,54 +153,136 @@ function Analytics() {
       console.error('Fetching analytics info error:', error);
     }
   };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-      <h1 className="text-2xl font-semibold text-gray-900">Analytics</h1>
-      <div className="mt-4">
-        <p className="text-gray-600">Manage your recurring analytics here.</p>
+        <div>
+          <h1 className="text-2xl font-bold text-blue-900">Analytics</h1>
+          <p className="text-blue-600">View your financial insights</p>
+        </div>
       </div>
-      </div>
-      {/**options={{ maintainAspectRatio: false }} */}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">Income vs Expenses This Month</h3>
-                <div className="h-64">
-                  <Doughnut data={balanceDoughnutData}  options={{ maintainAspectRatio: false }}/>
-                </div>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">All Categories Budget</h3>
-                <div className="h-64">
-                  <Doughnut data={categoryDoughnutData} options={{ maintainAspectRatio: false,  plugins: {
-                                                                                  colors: {
-                                                                                    forceOverride: true,
-                                                                                  },
-                                                                                }, }} />
-                </div>
-              </div>
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md border border-blue-100 p-6">
+          <h3 className="text-lg font-medium text-blue-900 mb-4">Income vs Expenses This Month</h3>
+          <div className="h-64">
+            <Doughnut 
+              data={balanceDoughnutData} 
+              options={{ 
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: 'bottom',
+                    labels: {
+                      font: {
+                        size: 12
+                      }
+                    }
+                  }
+                }
+              }}
+            />
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-4">
+            <div className="text-center">
+              <p className="text-sm text-blue-600">Income</p>
+              <p className="text-lg font-medium text-emerald-600">${totalIncome.toFixed(2)}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-blue-600">Expenses</p>
+              <p className="text-lg font-medium text-red-600">${totalExpenses.toFixed(2)}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md border border-blue-100 p-6">
+          <h3 className="text-lg font-medium text-blue-900 mb-4">Category Spending Breakdown</h3>
+          <div className="h-64">
+            <Doughnut 
+              data={categoryDoughnutData} 
+              options={{ 
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: 'bottom',
+                    labels: {
+                      font: {
+                        size: 12
+                      }
+                    }
+                  }
+                }
+              }}
+            />
+          </div>
+        </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">Income vs Expenses Yearly</h3>
-                <div className="h-64">
-                  <Bar data={barData}  options={barOptions}/>
-                </div>
-              </div>
-             {/**  <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">All Categories Budget</h3>
-                <div className="h-64">
-                  <Doughnut data={categoryDoughnutData} options={{ maintainAspectRatio: false,  plugins: {
-                                                                                  colors: {
-                                                                                    forceOverride: true,
-                                                                                  },
-                                                                                }, }} />
-                </div>
-              </div>*/}
+
+      <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md border border-blue-100 p-6">
+        <h3 className="text-lg font-medium text-blue-900 mb-4">Income vs Expenses Yearly</h3>
+        <div className="h-64">
+          <Bar 
+            data={barData} 
+            options={{
+              ...barOptions,
+              plugins: {
+                legend: {
+                  position: 'top',
+                  labels: {
+                    font: {
+                      size: 12
+                    }
+                  }
+                },
+                title: {
+                  display: true,
+                  text: 'Monthly Comparison',
+                  font: {
+                    size: 16
+                  },
+                  color: '#1E3A8A'
+                }
+              }
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md border border-blue-100 p-6">
+        <h3 className="text-lg font-medium text-blue-900 mb-4">Monthly Cashflow</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-blue-100">
+            <thead className="bg-blue-50/50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">Month</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">Income</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">Expenses</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">Net Cashflow</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-blue-100">
+              {yearLabels.map((month, index) => {
+                const income = yearIncome[index] || 0;
+                const expense = yearExpense[index] || 0;
+                const netCashflow = income - expense;
+                
+                return (
+                  <tr key={index} className="hover:bg-blue-50/50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600">{month}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-emerald-600">${income.toFixed(2)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600">${expense.toFixed(2)}</td>
+                    <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${netCashflow >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                      ${netCashflow.toFixed(2)}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-
-    
   );
 }
 
