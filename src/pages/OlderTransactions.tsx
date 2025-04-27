@@ -15,11 +15,9 @@ const OlderTransactions = () => {
   function moveToCreateTransaction() {
     navigate('/CreateTransaction');
   };
-  
   const goBack = () => {
     navigate(-1);
-  }
-  
+}
   const fetchTransactions = async () => {
     try {
         const response = await fetch('http://localhost:8080/api/transactions/fetch?startDate='+startDate+'&endDate='+endDate+'&category='+category+'&transactionDesc='+description, {
@@ -42,7 +40,6 @@ const OlderTransactions = () => {
         console.error('Fetching transactions error:', error);
       }
   };
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -66,7 +63,6 @@ const OlderTransactions = () => {
       console.error('Fetching transactions error:', error);
     }
   };
-  
   const removeTransaction = async (uuid: string) => {
     const realId = uuid;
     try {

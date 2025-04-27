@@ -8,11 +8,10 @@ const Transactions = () => {
   const navigate = useNavigate();
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
   const [month, setMonth] = useState(new Date().toLocaleString("en-US", { month: "long" }));
-  
+
   function moveToCreateTransaction() {
     navigate('/CreateTransaction');
   };
-  
   function goToPrevious() {
     navigate('/OlderTransactions');
   }
@@ -66,6 +65,9 @@ const Transactions = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
+      <button onClick={goToPrevious} className="bg-blue-600 text-white px-2 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          View Specific Transactions
+        </button>
         <div>
           <h1 className="text-2xl font-bold text-blue-900">Recent Transactions</h1>
           <p className="text-blue-600">View and manage your transactions for {month}</p>
