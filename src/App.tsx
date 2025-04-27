@@ -12,6 +12,7 @@ import Layout from './components/Layout';
 import Analytics from './pages/Analytics';
 import Profile from './pages/Profile';
 import CreateCategory from './pages/CreateCategory';
+import OlderTransactions from './pages/OlderTransactions';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
@@ -38,6 +39,7 @@ function App() {
         <Route path="/Analytics/" element={isAuthenticated ? (<Layout onLogout={handleLogout}> <Analytics /> </Layout>) : (<Navigate to="/login" replace />)} />
         <Route path="/Profile/" element={isAuthenticated ? (<Layout onLogout={handleLogout}> <Profile /> </Layout>) : (<Navigate to="/login" replace />)} />
         <Route path="/CreateCategory/" element={isAuthenticated ? (<Layout onLogout={handleLogout}> <CreateCategory /> </Layout>) : (<Navigate to="/login" replace />)} />
+        <Route path="/OlderTransactions/" element={isAuthenticated ? (<Layout onLogout={handleLogout}> <OlderTransactions /> </Layout>) : (<Navigate to="/login" replace />)} />
       </Routes>
     </Router>
   );

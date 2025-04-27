@@ -85,7 +85,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Link to="/" className="flex justify-center items-center">
           <Wallet className="h-12 w-12 text-blue-600" />
-          <span className="ml-2 text-2xl font-bold text-blue-900">Budget Website</span>
+          <span className="ml-2 text-2xl font-bold text-blue-900">Fit Budget</span>
         </Link>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-blue-900">
           Sign in to your account
