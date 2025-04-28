@@ -26,16 +26,19 @@ function CreateBudget() {
       e.preventDefault();
       addCategory({uuid: '', category: commonCategory, maxSpendAmt: categoryMaxCommon});
       setCategoryMaxCommon('');
+      setCommonCategory('');
     }
     const addNewCategory = async (e: React.FormEvent) => {
       e.preventDefault();
       addCategory({uuid: '', category: newCategory, maxSpendAmt: categoryMax});
       setCategoryMax('');
+      setNewCategory('');
     }
     const addIncome = async (e: React.FormEvent) => {
       e.preventDefault();
       addCategory({uuid: '', category: "Income", maxSpendAmt: income});
       setIncome('');
+      setCategoryMax('');
     }
     const fetchCategories = async () => {
         const id = localStorage.getItem('id');
