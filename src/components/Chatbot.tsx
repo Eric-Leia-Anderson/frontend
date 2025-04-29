@@ -360,7 +360,7 @@ function Chatbot() {
 
               const analyticsData: UserAnalyticsData = await response.json();
 
-
+              
               let formattedUserInfo = "User Financial Summary:\n\n";
               formattedUserInfo += `This Month:\n`;
               formattedUserInfo += `- Total Income: $${analyticsData.totalMonthIncome.toFixed(2)}\n`;
@@ -382,7 +382,7 @@ function Chatbot() {
               }
 
               console.log('Successfully fetched and formatted user analytics:', formattedUserInfo);
-
+              formattedUserInfo += 'You do not need to respond only about financial information and can talk about other things. The analytics should be shown when asked.'
               updateInitialHiddenMessage(formattedUserInfo);
 
           } catch (error) {
