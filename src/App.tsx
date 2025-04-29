@@ -13,6 +13,7 @@ import Analytics from './pages/Analytics';
 import Profile from './pages/Profile';
 import CreateCategory from './pages/CreateCategory';
 import OlderTransactions from './pages/OlderTransactions';
+import Chatbot from './components/Chatbot';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
@@ -26,6 +27,7 @@ function App() {
   };
 
   return (
+    <div>
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -42,6 +44,9 @@ function App() {
         <Route path="/OlderTransactions/" element={isAuthenticated ? (<Layout onLogout={handleLogout}> <OlderTransactions /> </Layout>) : (<Navigate to="/login" replace />)} />
       </Routes>
     </Router>
+
+    {isAuthenticated && <Chatbot/>}
+    </div>
   );
 }
 
