@@ -98,13 +98,14 @@ const Budget = () => {
               
               <div className="space-y-3">
                 <div className="flex justify-between text-sm font-medium">
-                  <span className="text-blue-800">Spent: ${Number(budget.spent).toFixed(2)}</span>
+                  { (budget.category != 'Income') && <span className="text-blue-800">Spent: ${Number(budget.spent).toFixed(2)}</span>}
+                  { (budget.category == 'Income') && <span className="text-blue-800">Received: ${Number(budget.spent).toFixed(2)}</span>}
                   <span className="text-blue-800">Budget: ${Number(budget.amount).toFixed(2)}</span>
                 </div>
                 
                 <div className="relative pt-1">
                   <div className="overflow-hidden h-3 text-xs flex rounded-full bg-blue-100 shadow-inner">
-                    <div
+                  {budget.category != 'Income' && <div
                       style={{ 
                         width: `${Math.min(percentage, 100)}%`,
                         transition: 'background-color 0.3s' 
@@ -112,14 +113,26 @@ const Budget = () => {
                       className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center rounded-full ${
                         isOverBudget ? 'bg-red-500' : percentage > 80 ? 'bg-yellow-500' : isHovered ? 'bg-indigo-500' : 'bg-emerald-500'
                       }`}
-                    />
-                  </div>
+                    /> }
+                    {budget.category == 'Income' && <div
+                      style={{ 
+                        width: `${Math.min(percentage, 100)}%`,
+                        transition: 'background-color 0.3s' 
+                      }}
+                      className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center rounded-full ${
+                        isOverBudget ? 'bg-emerald-500' : percentage > 80 ? 'bg-green-500' : isHovered ? 'bg-indigo-500' : 'bg-yellow-500'
+                      }`}
+                    /> }
+                  </div> 
                 </div>
                 
                 <div className="flex justify-between items-center text-sm bg-white bg-opacity-50 p-2 rounded-md">
-                  <span className={isOverBudget ? 'text-red-600 font-medium' : 'text-green-600 font-medium'}>
+                {budget.category != 'Income' && <span className={isOverBudget ? 'text-red-600 font-medium' : 'text-green-600 font-medium'}>
                     {percentage.toFixed(1)}% used
-                  </span>
+                  </span> }
+                  {budget.category == 'Income' && <span className={isOverBudget ? 'text-green-600 font-medium' : 'text-green-600 font-medium'}>
+                    {percentage.toFixed(1)}% used
+                  </span> }
                   <span className="text-blue-700 font-medium">
                     ${(Number(budget.amount) - Number(budget.spent)).toFixed(2)} remaining
                   </span>
