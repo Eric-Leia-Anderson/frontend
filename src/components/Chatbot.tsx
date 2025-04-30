@@ -367,7 +367,7 @@ function Chatbot() {
               formattedUserInfo += `- Total Expenses: $${analyticsData.totalMonthExpenses.toFixed(2)}\n`;
 
               if (analyticsData.allCategoryNames && analyticsData.allCategories && analyticsData.allCategoryNames.length === analyticsData.allCategories.length) {
-                  formattedUserInfo += `\nThis Month's Spending by Category:\n`;
+                  formattedUserInfo += `\nThis Month's Max Potential Spending by Category:\n`;
                   analyticsData.allCategoryNames.forEach((categoryName, index) => {
                       formattedUserInfo += `- ${categoryName}: $${analyticsData.allCategories[index].toFixed(2)}\n`;
                   });
@@ -379,6 +379,20 @@ function Chatbot() {
                   analyticsData.year.forEach((monthYear, index) => {
                        formattedUserInfo += `- ${monthYear}: Income $${analyticsData.yearIncome[index].toFixed(2)}, Expenses $${analyticsData.yearExpenses[index].toFixed(2)}\n`;
                   });
+              }
+
+              if(analyticsData.allTransactionsMonth && analyticsData.allTransactionsMonth.length > 0) {
+                formattedUserInfo += `\nTransaction This Month:\n`;
+                analyticsData.allTransactionsMonth.forEach((transaction) => {
+                        formattedUserInfo += `- ${transaction}: Description: ${transaction.transactionDesc}, Amount: $${transaction.amount}, Category: ${transaction.category}, Date: ${transaction.date}\n`;
+                })
+              }
+
+              if(analyticsData.allTransactionsYear && analyticsData.allTransactionsYear.length > 0) {
+                formattedUserInfo += `\nTransaction This Year:\n`;
+                analyticsData.allTransactionsYear.forEach((transaction) => {
+                        formattedUserInfo += `- ${transaction}: Description: ${transaction.transactionDesc}, Amount: $${transaction.amount}, Category: ${transaction.category}, Date: ${transaction.date}\n`;
+                })
               }
 
               console.log('Successfully fetched and formatted user analytics:', formattedUserInfo);

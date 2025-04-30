@@ -108,7 +108,7 @@ const Transactions = () => {
               {transactions.map((transaction) => (
                 <tr key={transaction.id} className="hover:bg-blue-50/50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
-                    {new Date(transaction.date).toLocaleDateString()}
+                    {new Date(transaction.date).toLocaleDateString('en-US', {timeZone: 'UTC'})}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-900">
                     {transaction.transactionDesc}

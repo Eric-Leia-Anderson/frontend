@@ -120,7 +120,7 @@ const Budget = () => {
                         transition: 'background-color 0.3s' 
                       }}
                       className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center rounded-full ${
-                        isOverBudget ? 'bg-emerald-500' : percentage > 80 ? 'bg-green-500' : isHovered ? 'bg-indigo-500' : 'bg-yellow-500'
+                        isOverBudget ? 'bg-emerald-500' : percentage > 80 ? 'bg-yellow-500' : isHovered ? 'bg-indigo-500' : 'bg-yellow-500'
                       }`}
                     /> }
                   </div> 

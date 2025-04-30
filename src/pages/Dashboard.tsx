@@ -123,7 +123,7 @@ const Home = () => {
                     <div className="ml-3">
                       <p className="text-sm font-medium text-gray-900">{transaction.transactionDesc}</p>
                       <p className="text-xs text-gray-500">
-                        {new Date(transaction.date).toLocaleDateString()} • {transaction.category}
+                        {new Date(transaction.date).toLocaleDateString('en-US', {timeZone: 'UTC'})} • {transaction.category}
                       </p>
                     </div>
                   </div>
